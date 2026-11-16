@@ -1,0 +1,91 @@
+plugins {
+    id 'multiloader-loader'
+    id 'fabric-loom'
+}
+
+repositories {
+    mavenLocal()
+
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org/'
+    }
+
+    maven {
+        name = 'TheIllusiveC4'
+        url = 'https://maven.theillusivec4.top'
+    }
+
+    maven {
+        name = 'WispForest'
+        url = 'https://maven.wispforest.io/releases'
+    }
+
+    exclusiveContent {
+        forRepository { maven { name = 'Modrinth'; url = 'https://api.modrinth.com/maven' } }
+        filter { includeGroup('maven.modrinth') }
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Sponge'
+                url = 'https://repo.spongepowered.org/repository/maven-public'
+            }
+        }
+        filter { includeGroupAndSubgroups('org.spongepowered') }
+    }
+
+    maven {
+        name = 'DevAuth'
+        url = 'https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1'
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
+    }
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+
+    modImplementation  "maven.modrinth:bcOsQHnC:kJmjQvAS" // Female Gender Mod
+
+    modImplementation "maven.modrinth:H5XMjpHi:UowdyPMu" // First Person Model
+    modImplementation "maven.modrinth:MPCX6s5C:pPdRjl6T" // Not Enough Animations
+    modImplementation files("libs/TRansition-1.0.25-1.21.1-fabric-SNAPSHOT.jar") // lib's for FPM and NEA
+    modImplementation files("libs/TRender-1.0.17-1.21.1-fabric-SNAPSHOT.jar")    // lib's for FPM and NEA
+
+    modRuntimeOnly "me.djtheredstoner:DevAuth-fabric:1.2.2"
+}
+
+loom {
+    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
+    }
+    runs {
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+        }
+        clientAuth {
+            client()
+            setConfigName('Fabric Client Auth')
+            ideConfigGenerated(true)
+            runDir('runs/client2')
+            property('devauth.enabled', 'true')
+            property('devauth.account', 'main')
+        }
+        server {
+            server()
+            setConfigName('Fabric Server')
+            ideConfigGenerated(true)
+            runDir('runs/server')
+        }
+    }
+}

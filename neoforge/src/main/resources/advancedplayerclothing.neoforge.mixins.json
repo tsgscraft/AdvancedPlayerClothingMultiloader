@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.tsgscraft.advancedplayerclothing.client.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "fmg.GenderLayerMixin",
+    "rd.RagdollPartBlockEntityRendererMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "plugin": "de.tsgscraft.advancedplayerclothing.client.mixin.AdvancedClothingMixinPlugin"
+}

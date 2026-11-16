@@ -1,0 +1,26 @@
+#Whether the mod is enabled
+enabled = true
+#Whether to use a custom skin for the player (use a resource pack ('/textures/entity/player.png'))
+customSkin = false
+#Change you player model type (0 = default, 1 = wide/steve, 2 = alex/slim)
+# Default: 0
+# Range: 0 ~ 2
+customModel = 0
+
+[debug]
+	#Whether to enable debug mode
+	debug = false
+	#Whether to hide the base
+	debugSkin = false
+	#Change the skin texture to a debug one
+	debugSkinTexture = false
+	#Hide everything but the Female Gender Mod Breast model
+	onlyBreasts = false
+	#Hide the left breast
+	hideLeftBoob = false
+	#Hide the right breast
+	hideRightBoob = false
+	#Whether to enable debug mode in first person
+	debugFirstPerson = false
+	#Whether to enable debug mode for modifiers
+	debugModifiers = false

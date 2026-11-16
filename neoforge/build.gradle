@@ -1,0 +1,95 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev'
+}
+repositories {
+    mavenLocal()
+
+    maven { url = 'https://maven.ryanhcode.dev/releases' }
+
+    maven {
+        name = 'NeoForge'
+        url = 'https://maven.neoforged.net/releases'
+    }
+
+    maven {
+        name = 'TheIllusiveC4'
+        url = 'https://maven.theillusivec4.top'
+    }
+
+    maven {
+        name = 'WispForest'
+        url = 'https://maven.wispforest.io/releases'
+    }
+
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Sponge'
+                url = 'https://repo.spongepowered.org/repository/maven-public'
+            }
+        }
+        filter { includeGroupAndSubgroups('org.spongepowered') }
+    }
+}
+
+neoForge {
+    version = neoforge_version
+    // Automatically enable neoforge AccessTransformers if the file exists
+    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.add(at.absolutePath)
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+        }
+        client {
+            client()
+        }
+        data {
+            data()
+        }
+        server {
+            server()
+        }
+    }
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+dependencies {
+    //compileOnly "com.wildfiregender.main:FemaleGenderMod:neoforge-${minecraft_version}-${fgm_version}"
+    //runtimeOnly "com.wildfiregender.main:FemaleGenderMod:neoforge-${minecraft_version}-${fgm_version}"
+    implementation "maven.modrinth:bcOsQHnC:kKffHCGl" // Female Gender Mod
+
+    //compileOnly "dev.tr7zw:firstperson:neoforge-${firstperson_version}-mc${minecraft_version}"
+    //runtimeOnly "dev.tr7zw:firstperson:neoforge-${firstperson_version}-mc${minecraft_version}"
+    implementation "maven.modrinth:H5XMjpHi:wcETD2Bu" // First Person Model
+
+    compileOnly "dev.leo.sableplayerragdoll:sable_player_ragdoll-${minecraft_version}:${ragdoll_version}"
+    runtimeOnly "dev.leo.sableplayerragdoll:sable_player_ragdoll-${minecraft_version}:${ragdoll_version}"
+
+    implementation("dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}") {
+        exclude group: 'foundry.veil'
+        exclude group: 'com.simibubi.create'
+        exclude group: 'net.createmod.ponder'
+        exclude group: 'dev.engine-room.flywheel'
+        exclude group: 'com.tterrag.registrate'
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }

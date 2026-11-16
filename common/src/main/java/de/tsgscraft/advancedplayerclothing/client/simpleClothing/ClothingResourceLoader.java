@@ -1,0 +1,292 @@
+package de.tsgscraft.advancedplayerclothing.client.simpleClothing;
+
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
+import de.tsgscraft.advancedplayerclothing.CommonClass;
+import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.ClothingElement;
+import de.tsgscraft.advancedplayerclothing.client.anchor.ClothingAnchorInfo;
+import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
+import de.tsgscraft.advancedplayerclothing.client.render.ClothingRendering;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+
+public class ClothingResourceLoader implements PreparableReloadListener {
+
+    @Override
+    public CompletableFuture<Void> reload(
+            PreparationBarrier barrier,
+            ResourceManager resourceManager,
+            ProfilerFiller preparationsProfiler,
+            ProfilerFiller reloadProfiler,
+            Executor backgroundExecutor,
+            Executor gameExecutor
+    ) {
+        return CompletableFuture
+                .supplyAsync(
+                        () -> loadClothing(resourceManager),
+                        backgroundExecutor
+                )
+                .thenCompose(barrier::wait)
+                .thenAcceptAsync(
+                        loadedClothing -> {
+                            for (ClothingElement clothing : loadedClothing.values()) {
+                                clothing.renderInfo().bake();
+                            }
+                            CommonClass.getClothingRegistry().setClothingElements(loadedClothing);
+                        },
+                        gameExecutor
+                );
+    }
+
+    public static Map<String,ClothingElement> loadClothing(ResourceManager resourceManager) {
+        ClothingRegistry.getInstance().clear();
+        Map<String, ClothingElement> result = new HashMap<>();
+
+        ResourceLocation location =
+                ResourceLocation.fromNamespaceAndPath(
+                        REFERENCE.MOD_ID,
+                        "clothing.json"
+                );
+
+        List<Resource> resources =
+                resourceManager.getResourceStack(location);
+
+        for (Resource resource : resources) {
+            try (Reader reader = resource.openAsReader()) {
+
+                JsonObject json =
+                        JsonParser.parseReader(reader).getAsJsonObject();
+
+                JsonArray clothing =
+                        json.getAsJsonArray("clothing");
+
+                for (JsonElement element : clothing) {
+                    ResourceLocation clothingDataLocation = ResourceLocation.parse(element.getAsString());
+                    Resource data = resourceManager.getResource(clothingDataLocation).orElse(null);
+                    if (data == null) {
+                        REFERENCE.LOG.warn("Failed to find clothing data for location: {}", clothingDataLocation);
+                        continue;
+                    }
+                    try (Reader infoReader = data.openAsReader()) {
+                        JsonObject clothingJson = JsonParser.parseReader(infoReader).getAsJsonObject();
+
+                        String clothingName = clothingJson.get("name").getAsString();
+
+                        ResourceLocation clothingType = ResourceLocation.parse(clothingJson.get("type").getAsString());
+
+                        Map<String, TextureData> textureDataMap = new HashMap<>();
+                        JsonArray textures = clothingJson.getAsJsonArray("textures");
+                        for (JsonElement textureElement : textures) {
+                            JsonObject textureObject = textureElement.getAsJsonObject();
+                            String textureId = textureObject.get("id").getAsString();
+                            ResourceLocation textureLocation = ResourceLocation.parse(textureObject.get("location").getAsString());
+                            ResourceLocation debugTextureLocation = null;
+                            if (textureObject.has("debug")) {
+                                debugTextureLocation = ResourceLocation.parse(textureObject.get("debug").getAsString());
+                            }
+                            int width = textureObject.get("width").getAsInt();
+                            int height = textureObject.get("height").getAsInt();
+                            TextureData textureData = new TextureData(textureLocation, width, height, debugTextureLocation);
+                            textureDataMap.put(textureId, textureData);
+                        }
+
+                        ResourceLocation modelDataLocation = null;
+                        if (clothingJson.has("model")) {
+                            modelDataLocation = ResourceLocation.parse(clothingJson.get("model").getAsString());
+                            checkModel(modelDataLocation, resourceManager, clothingDataLocation);
+                        }
+
+                        ResourceLocation slimModelLocation = null;
+                        if (clothingJson.has("slim_model")) {
+                            slimModelLocation = ResourceLocation.parse(clothingJson.get("slim_model").getAsString());
+                            checkModel(slimModelLocation, resourceManager, clothingDataLocation);
+                        }
+
+                        result.put(clothingDataLocation.toString(), new ClothingElement(new ClothingRendering(textureDataMap, modelDataLocation, slimModelLocation), new ClothingModifiers(clothingJson.has("modifiers") ? clothingJson.get("modifiers").getAsJsonObject() : new JsonObject()), clothingName, clothingType.toString(), clothingDataLocation));
+                    } catch (Exception e) {
+                        REFERENCE.LOG.error(
+                                "Failed to load model {} from resource pack {}",
+                                clothingDataLocation,
+                                data.sourcePackId(),
+                                e
+                        );
+                    }
+                }
+            } catch (Exception e) {
+                REFERENCE.LOG.error(
+                        "Failed to load {} from resource pack {}",
+                        location,
+                        resource.sourcePackId(),
+                        e
+                );
+            }
+        }
+
+        return result;
+    }
+
+    public static void checkModel(ResourceLocation modelLocation, ResourceManager resourceManager, ResourceLocation clothingDataLocation) {
+        boolean registered = ClothingRegistry.getInstance().hasModelRegistered(modelLocation);
+        if (!registered) {
+            Resource resource = resourceManager.getResource(modelLocation).orElse(null);
+            if (resource == null) {
+                REFERENCE.LOG.warn("Failed to find model for location: {} referenced in clothing data: {}", modelLocation, clothingDataLocation);
+                return;
+            }
+            Map<ClothingAnchorInfo, List<CubeDefinition>> modelData = loadModel(resource);
+            ClothingRegistry.getInstance().registerClothingModel(modelLocation, new ClothingModel(modelData));
+            REFERENCE.LOG.info("Registered model for location: {} from clothing data: {}", modelLocation, clothingDataLocation);
+        }else {
+            REFERENCE.LOG.info("Model already registered for location: {} from clothing data: {}", modelLocation, clothingDataLocation);
+        }
+    }
+
+    public static Map<ClothingAnchorInfo, List<CubeDefinition>> loadModel(Resource key) {
+        try (Reader reader = key.openAsReader()) {
+
+            JsonObject json =
+                    JsonParser.parseReader(reader).getAsJsonObject();
+
+            return loadModel(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Map<ClothingAnchorInfo, List<CubeDefinition>> loadModel(JsonObject model) {
+        Map<ClothingAnchorInfo, List<CubeDefinition>> cubes = new HashMap<>();
+        JsonArray anchors = model.getAsJsonArray("anchors");
+        for (int i = 0; i < anchors.size(); i++) {
+            JsonObject anchorObject = anchors.get(i).getAsJsonObject();
+            String anchorName = anchorObject.get("anchor").getAsString();
+            ClothingAnchorInfo anchorInfo;
+            float offsetX = 0;
+            float offsetY = 0;
+            float offsetZ = 0;
+            if (anchorObject.has("offset")) {
+                JsonArray offsetArray = anchorObject.getAsJsonArray("offset");
+                offsetX = offsetArray.get(0).getAsFloat();
+                offsetY = offsetArray.get(1).getAsFloat();
+                offsetZ = offsetArray.get(2).getAsFloat();
+                anchorInfo = new ClothingAnchorInfo(
+                        ResourceLocation.parse(anchorName),
+                        offsetX,
+                        offsetY,
+                        offsetZ
+                );
+            }else {
+                anchorInfo = new ClothingAnchorInfo(
+                        ResourceLocation.parse(anchorName),
+                        0,
+                        0,
+                        0
+                );
+            }
+            JsonArray elements = anchorObject.getAsJsonArray("elements");
+            CubeListBuilder cubeListBuilder = new CubeListBuilder();
+            for (int j = 0; j < elements.size(); j++) {
+                JsonObject elementObject = elements.get(j).getAsJsonObject();
+
+                JsonArray fromArray = elementObject.getAsJsonArray("from");
+                float fromX = fromArray.get(0).getAsFloat();
+                float fromY = fromArray.get(1).getAsFloat();
+                float fromZ = fromArray.get(2).getAsFloat();
+
+                JsonArray toArray = elementObject.getAsJsonArray("to");
+                float toX = toArray.get(0).getAsFloat();
+                float toY = toArray.get(1).getAsFloat();
+                float toZ = toArray.get(2).getAsFloat();
+
+                CubeRotation rotation = new CubeRotation(0, 0, 0, 0, 0, 0);
+                if (elementObject.has("rotation")) {
+                    JsonObject rotationObject = elementObject.getAsJsonObject("rotation");
+                    if (rotationObject.has("axis")) {
+                        String axis = rotationObject.get("axis").getAsString();
+                        float angle = rotationObject.get("angle").getAsFloat();
+                        JsonArray pivotArray = rotationObject.getAsJsonArray("origin");
+                        float pivotX = pivotArray.get(0).getAsFloat();
+                        float pivotY = pivotArray.get(1).getAsFloat();
+                        float pivotZ = pivotArray.get(2).getAsFloat();
+                        rotation = switch (axis) {
+                            case "x" -> new CubeRotation(angle, 0, 0, pivotX, pivotY, pivotZ);
+                            case "y" -> new CubeRotation(0, angle, 0, pivotX, pivotY, pivotZ);
+                            case "z" -> new CubeRotation(0, 0, angle, pivotX, pivotY, pivotZ);
+                            default -> rotation;
+                        };
+                    }else {
+                        float rotationX = rotationObject.get("x").getAsFloat();
+                        float rotationY = rotationObject.get("y").getAsFloat();
+                        float rotationZ = rotationObject.get("z").getAsFloat();
+
+                        JsonArray pivotArray = rotationObject.getAsJsonArray("origin");
+                        float pivotX = pivotArray.get(0).getAsFloat();
+                        float pivotY = pivotArray.get(1).getAsFloat();
+                        float pivotZ = pivotArray.get(2).getAsFloat();
+                        rotation = new CubeRotation(rotationX, rotationY, rotationZ, pivotX, pivotY, pivotZ);
+                    }
+                }
+
+                cubeListBuilder.texOffs(getUvData(elementObject.getAsJsonObject("faces")));
+                cubeListBuilder.addBox(fromX, fromY, fromZ, toX - fromX, toY - fromY, toZ - fromZ, rotation, PartPose.offset(offsetX, offsetY, offsetZ));
+            }
+            cubes.put(anchorInfo, cubeListBuilder.getCubes());
+        }
+        return cubes;
+    }
+
+    public static ModelCube.UVData getUvData(JsonObject elementObject) {
+        ModelCube.FaceData north = null;
+        if (elementObject.has("north"))
+            north = getFaceData(elementObject.getAsJsonObject("north"));
+        ModelCube.FaceData south = null;
+        if (elementObject.has("south"))
+            south = getFaceData(elementObject.getAsJsonObject("south"));
+        ModelCube.FaceData east = null;
+        if (elementObject.has("east"))
+            east = getFaceData(elementObject.getAsJsonObject("east"));
+        ModelCube.FaceData west = null;
+        if (elementObject.has("west"))
+            west = getFaceData(elementObject.getAsJsonObject("west"));
+        ModelCube.FaceData up = null;
+        if (elementObject.has("up"))
+            up = getFaceData(elementObject.getAsJsonObject("up"));
+        ModelCube.FaceData down = null;
+        if (elementObject.has("down"))
+            down = getFaceData(elementObject.getAsJsonObject("down"));
+        return new ModelCube.UVData(
+                up,
+                down,
+                west,
+                north,
+                east,
+                south
+        );
+    }
+
+    public static ModelCube.FaceData getFaceData(JsonObject faceObject) {
+        JsonArray uvArray = faceObject.getAsJsonArray("uv");
+        float u1 = uvArray.get(0).getAsFloat();
+        float v1 = uvArray.get(1).getAsFloat();
+        float u2 = uvArray.get(2).getAsFloat();
+        float v2 = uvArray.get(3).getAsFloat();
+        String textureId = faceObject.get("texture").getAsString();
+        return new ModelCube.FaceData(u1, v1, u2, v2, textureId);
+    }
+}

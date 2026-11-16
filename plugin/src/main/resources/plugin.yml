@@ -1,0 +1,7 @@
+name: AdvancedPlayerClothing
+version: '${version}'
+
+main: de.tsgscraft.advancedPlayerClothing.AdvancedPlayerClothing
+api-version: '1.21'
+
+authors: [tsgscraft]
