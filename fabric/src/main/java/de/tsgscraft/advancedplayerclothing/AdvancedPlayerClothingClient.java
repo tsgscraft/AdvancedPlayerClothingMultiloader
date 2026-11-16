@@ -8,6 +8,9 @@ import net.fabricmc.api.ClientModInitializer;
 
 public class AdvancedPlayerClothingClient implements ClientModInitializer {
 
+    // TODO: Config Screen
+    // TODO: Fix icon for mod menu
+
     @Override
     public void onInitializeClient() {
         CommonClass.setClientSide(true);
