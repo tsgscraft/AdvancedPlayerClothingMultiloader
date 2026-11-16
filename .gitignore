@@ -13,3 +13,7 @@
 /neoforge/build/classes/java/main/
 /plugin/build/
 /plugin/build/classes/java/main/
+/fabric/runs/
+/neoforge/run/
+/.idea/
+/gradle/
