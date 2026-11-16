@@ -1,5 +1,6 @@
 package de.tsgscraft.advancedplayerclothing;
 
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.ClothingElement;
 import de.tsgscraft.advancedplayerclothing.client.ClothingSave;
 import de.tsgscraft.advancedplayerclothing.client.simpleClothing.ClothingModel;
@@ -98,7 +99,7 @@ public class ClothingRegistry {
     public Map<UUID, Map<String, String>> activeClothingElementsByPlayer = new HashMap<>();
 
     public void setActiveClothingData(Map<String, String> clothingData) {
-        this.activeClothingElementsByPlayer.put(CommonClass.getClientPlayerUUID(), clothingData);
+        this.activeClothingElementsByPlayer.put(C_REFERENCE.getClientPlayerUUID(), clothingData);
         saveActiveClothingData();
         ClothingNetwork.sendFullClothing();
     }
@@ -162,7 +163,7 @@ public class ClothingRegistry {
     }
 
     public Map<String, String> getActiveClothingElements() {
-        return activeClothingElementsByPlayer.computeIfAbsent(CommonClass.getClientPlayerUUID(), k -> new HashMap<>());
+        return activeClothingElementsByPlayer.computeIfAbsent(C_REFERENCE.getClientPlayerUUID(), k -> new HashMap<>());
     }
 
     public Map<String, String> getActiveClothingElements(UUID uuid) {

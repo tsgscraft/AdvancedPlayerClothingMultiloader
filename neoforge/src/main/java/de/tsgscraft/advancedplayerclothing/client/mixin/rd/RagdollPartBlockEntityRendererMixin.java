@@ -3,6 +3,7 @@ package de.tsgscraft.advancedplayerclothing.client.mixin.rd;
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.tsgscraft.advancedplayerclothing.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
 import de.tsgscraft.advancedplayerclothing.client.render.AnchorLayerRender;
 import de.tsgscraft.advancedplayerclothing.platform.RagdollPart;
@@ -67,10 +68,10 @@ public abstract class RagdollPartBlockEntityRendererMixin {
             ResourceLocation original
     ) {
         if (ConfigValues.DEBUG_SKIN_TEXTURE) {
-            return REFERENCE.debugSkin;
+            return C_REFERENCE.debugSkin;
         }
-        if (REFERENCE.isCurrentPlayer(advancedClothing$currentPlayerUUID) && ConfigValues.CUSTOM_SKIN) {
-            return REFERENCE.customSkin;
+        if (C_REFERENCE.isCurrentPlayer(advancedClothing$currentPlayerUUID) && ConfigValues.CUSTOM_SKIN) {
+            return C_REFERENCE.customSkin;
         }
         return original;
     }

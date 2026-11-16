@@ -1,6 +1,9 @@
 package de.tsgscraft.advancedplayerclothing.client.screen;
 
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
+import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.render.AnchorLayerRender;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -58,7 +61,10 @@ public class ClothingSelectionScreen extends Screen {
         if (minecraft != null && minecraft.level != null) {
             Player ent = minecraft.level.getPlayerByUUID(minecraft.player.getUUID());
             if (ent != null) {
+                boolean oldSkipHead = C_REFERENCE.skipHead;
+                C_REFERENCE.skipHead = false;
                 InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x - 164, y - 80, x, y + 80, 45, 0, mouseX, mouseY, ent);
+                C_REFERENCE.skipHead = oldSkipHead;
             }
         }
     }

@@ -3,6 +3,7 @@ package de.tsgscraft.advancedplayerclothing.events;
 import de.tsgscraft.advancedplayerclothing.CommonClass;
 import de.tsgscraft.advancedplayerclothing.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.ClothingCommand;
 import de.tsgscraft.advancedplayerclothing.client.ClothingSave;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
@@ -42,7 +43,7 @@ public class Events {
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
-            REFERENCE.compatibleServer = false;
+            C_REFERENCE.compatibleServer = false;
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -63,12 +64,12 @@ public class Events {
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new ReloadListener());
 
-        KeyBindingHelper.registerKeyBinding(CommonClass.toggleEditGUI);
+        KeyBindingHelper.registerKeyBinding(C_REFERENCE.toggleEditGUI);
 
 
 
-        EntityModelLayerRegistry.registerModelLayer(REFERENCE.ANCHOR_LAYER, () -> AnchorLayer.createBaseLayer(false));
-        EntityModelLayerRegistry.registerModelLayer(REFERENCE.SLIM_ARMOR_LAYER, () -> AnchorLayer.createBaseLayer(true));
+        EntityModelLayerRegistry.registerModelLayer(C_REFERENCE.ANCHOR_LAYER, () -> AnchorLayer.createBaseLayer(false));
+        EntityModelLayerRegistry.registerModelLayer(C_REFERENCE.SLIM_ARMOR_LAYER, () -> AnchorLayer.createBaseLayer(true));
 
         LivingEntityFeatureRendererRegistrationCallback.EVENT.register(
                 (entityType, entityRenderer, registrationHelper, context) -> {

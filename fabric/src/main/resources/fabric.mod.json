@@ -16,7 +16,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "de.tsgscraft.advancedplayerclothing.Advancedplayerclothing"
+      "de.tsgscraft.advancedplayerclothing.AdvancedPlayerClothing"
     ],
     "client": [
       "de.tsgscraft.advancedplayerclothing.AdvancedPlayerClothingClient"

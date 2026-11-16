@@ -1,6 +1,7 @@
 package de.tsgscraft.advancedplayerclothing.network;
 
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.network.clothing.*;
 import de.tsgscraft.advancedplayerclothing.network.plugin.TestForServerPayload;
 import de.tsgscraft.advancedplayerclothing.network.plugin.TestForServerReturnPayload;
@@ -8,7 +9,6 @@ import de.tsgscraft.advancedplayerclothing.platform.Services;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
@@ -28,6 +28,7 @@ public class ClothingNetworkModEvents {
                     context.enqueueWork(() -> {
                         ClothingNetwork.receiveSetClothing(payload);
                         Services.NETWORK.sendToAllPlayers(
+                                context.player().getServer().getPlayerList().getPlayers(),
                                 new SetClothingSyncPayload(
                                         context.player().getUUID().toString(),
                                         payload.clothingType(),
@@ -45,6 +46,7 @@ public class ClothingNetworkModEvents {
                     context.enqueueWork(() -> {
                         ClothingNetwork.receiveFullClothing(payload);
                         Services.NETWORK.sendToAllPlayers(
+                                context.player().getServer().getPlayerList().getPlayers(),
                                 new FullClothingSyncPayload(payload.playerUUID(), payload.clothingData())
                         );
                     });
@@ -109,7 +111,7 @@ public class ClothingNetworkModEvents {
                     if (payload.data() == 1) {
                         // Compatible server detected!
                         REFERENCE.LOG.info("Compatible server detected!");
-                        REFERENCE.compatibleServer = true;
+                        C_REFERENCE.compatibleServer = true;
                     }
                 }
         );

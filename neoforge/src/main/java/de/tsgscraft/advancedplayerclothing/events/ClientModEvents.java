@@ -2,6 +2,7 @@ package de.tsgscraft.advancedplayerclothing.events;
 
 import de.tsgscraft.advancedplayerclothing.CommonClass;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.render.AnchorLayer;
 import de.tsgscraft.advancedplayerclothing.client.render.AnchorLayerRender;
 import de.tsgscraft.advancedplayerclothing.client.screen.ClothingSelectionScreen;
@@ -24,13 +25,13 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
-        event.register(CommonClass.toggleEditGUI);
+        event.register(C_REFERENCE.toggleEditGUI);
     }
 
     @SubscribeEvent
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(REFERENCE.ANCHOR_LAYER, () -> AnchorLayer.createBaseLayer(false));
-        event.registerLayerDefinition(REFERENCE.SLIM_ARMOR_LAYER, () -> AnchorLayer.createBaseLayer(true));
+        event.registerLayerDefinition(C_REFERENCE.ANCHOR_LAYER, () -> AnchorLayer.createBaseLayer(false));
+        event.registerLayerDefinition(C_REFERENCE.SLIM_ARMOR_LAYER, () -> AnchorLayer.createBaseLayer(true));
     }
 
     @SubscribeEvent

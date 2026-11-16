@@ -29,7 +29,6 @@ public class AdvancedClothingMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        REFERENCE.LOG.info("Checking if mixin {} should be applied for target class {}", mixinClassName, targetClassName);
         if (mixinClassName.equals("de.tsgscraft.advancedplayerclothing.client.mixin.fmg.GenderLayerMixin")) {
             return fmgModLoaded;
         }

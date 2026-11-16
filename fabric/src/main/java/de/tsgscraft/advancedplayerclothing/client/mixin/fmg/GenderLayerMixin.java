@@ -9,6 +9,7 @@ import com.wildfire.render.BreastSide;
 import com.wildfire.render.GenderLayer;
 import de.tsgscraft.advancedplayerclothing.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
@@ -65,9 +66,9 @@ public class GenderLayerMixin<T extends LivingEntity, M extends HumanoidModel<T>
         ResourceLocation resourcelocation;
         if (entity instanceof Player player) {
             if (ConfigValues.DEBUG_SKIN_TEXTURE) {
-                resourcelocation = REFERENCE.debugSkin;
-            } else if (ConfigValues.CUSTOM_SKIN && REFERENCE.isCurrentPlayer(player.getUUID())) {
-                resourcelocation = REFERENCE.customSkin;
+                resourcelocation = C_REFERENCE.debugSkin;
+            } else if (ConfigValues.CUSTOM_SKIN && C_REFERENCE.isCurrentPlayer(player.getUUID())) {
+                resourcelocation = C_REFERENCE.customSkin;
             } else {
                 return original.call(instance, entity, bodyVisible, translucent, glowing);
             }

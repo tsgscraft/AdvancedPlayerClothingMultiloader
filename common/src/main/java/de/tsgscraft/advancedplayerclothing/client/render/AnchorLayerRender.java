@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
 import de.tsgscraft.advancedplayerclothing.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.platform.RagdollPart;
 import de.tsgscraft.advancedplayerclothing.client.ClothingElement;
 import de.tsgscraft.advancedplayerclothing.client.mixin.PlayerModelAccessor;
@@ -37,12 +38,12 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
         super(renderer);
 
         layer = new AnchorLayer(
-                modelSet.bakeLayer(REFERENCE.ANCHOR_LAYER),
+                modelSet.bakeLayer(C_REFERENCE.ANCHOR_LAYER),
                 false
         );
 
         slimLayer = new AnchorLayer(
-                modelSet.bakeLayer(REFERENCE.SLIM_ARMOR_LAYER),
+                modelSet.bakeLayer(C_REFERENCE.SLIM_ARMOR_LAYER),
                 true
         );
     }
@@ -100,7 +101,7 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
 
         // Render the anchor layer itself (as a smaller secondLayer)
         VertexConsumer vertexConsumer = buffer.getBuffer(
-                RenderType.entityCutoutNoCull(ConfigValues.DEBUG_SKIN_TEXTURE ? REFERENCE.debugSkin : (ConfigValues.CUSTOM_SKIN && REFERENCE.isCurrentPlayer(entity.getUUID())) ? REFERENCE.customSkin : entity.getSkin().texture())
+                RenderType.entityCutoutNoCull(ConfigValues.DEBUG_SKIN_TEXTURE ? C_REFERENCE.debugSkin : (ConfigValues.CUSTOM_SKIN && C_REFERENCE.isCurrentPlayer(entity.getUUID())) ? C_REFERENCE.customSkin : entity.getSkin().texture())
         );
 
         if (((PlayerModelAccessor) parent).isSlim()) {
@@ -131,14 +132,14 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
     }
 
     public static void checkFirstPerson(AbstractClientPlayer player, AnchorLayer model) {
-        REFERENCE.updateFirstPerson();
+        C_REFERENCE.updateFirstPerson();
         if (ConfigValues.DEBUG_FIRST_PERSON) {
             player.sendSystemMessage(
-                    Component.literal("player: " + player.getName().getString() + " | skipHead: " + REFERENCE.skipHead)
+                    Component.literal("player: " + player.getName().getString() + " | skipHead: " + C_REFERENCE.skipHead)
             );
         }
         if (Minecraft.getInstance().player == player) {
-            if (REFERENCE.skipHead) {
+            if (C_REFERENCE.skipHead) {
                 model.head.visible = false;
                 model.hat.visible = false;
             }

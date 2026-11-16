@@ -2,6 +2,7 @@ package de.tsgscraft.advancedplayerclothing.network;
 
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.network.clothing.*;
 import de.tsgscraft.advancedplayerclothing.platform.Services;
 import net.minecraft.client.Minecraft;
@@ -16,18 +17,16 @@ public class ClothingNetwork {
     }
 
     public static void sendSetClothing(String clothingType, String clothingId) {
-        System.out.println("Sending set clothing packet: " + clothingType + ", " + clothingId);
         Minecraft minecraft = Minecraft.getInstance();
 
         if (minecraft.getConnection() == null) {
             return;
         }
 
-        if (!REFERENCE.compatibleServer) return;
+        if (!C_REFERENCE.compatibleServer) return;
 
         LocalPlayer player = minecraft.player;
         if (player == null) {
-            System.out.println("Player is null, cannot send set clothing packet.");
             return;
         }
         UUID playerUUID = player.getUUID();
@@ -40,7 +39,6 @@ public class ClothingNetwork {
                 );
 
         Services.NETWORK.sendToServer(payload);
-        System.out.println("Sent set clothing packet: " + clothingType + ", " + clothingId);
     }
 
     public static void receiveSetClothing(SetClothingSyncPayload payload) {
@@ -63,14 +61,13 @@ public class ClothingNetwork {
             return;
         }
 
-        if (!REFERENCE.compatibleServer) return;
+        if (!C_REFERENCE.compatibleServer) return;
 
         FullClothingPayload payload =
                 new FullClothingPayload(
                         Minecraft.getInstance().player.getUUID().toString(),
                         ClothingRegistry.getInstance().getActiveClothingElements()
                 );
-        System.out.println("Sending full clothing payload with " + payload.clothingData().size() + " entries.");
 
         Services.NETWORK.sendToServer(payload);
     }

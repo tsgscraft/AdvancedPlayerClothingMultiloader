@@ -3,6 +3,7 @@ package de.tsgscraft.advancedplayerclothing.client.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import de.tsgscraft.advancedplayerclothing.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -36,11 +37,11 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
             @Local(argsOnly = true) AbstractClientPlayer player
     ) {
         if (ConfigValues.DEBUG_SKIN_TEXTURE) {
-            return REFERENCE.debugSkin;
+            return C_REFERENCE.debugSkin;
         }
 
-        if (ConfigValues.CUSTOM_SKIN && REFERENCE.isCurrentPlayer(player.getUUID())) {
-            return REFERENCE.customSkin;
+        if (ConfigValues.CUSTOM_SKIN && C_REFERENCE.isCurrentPlayer(player.getUUID())) {
+            return C_REFERENCE.customSkin;
         }
 
         return original;
@@ -53,10 +54,10 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
     )
     public void getTextureLocation(AbstractClientPlayer player, CallbackInfoReturnable<ResourceLocation> cir) {
         if (ConfigValues.DEBUG_SKIN_TEXTURE) {
-            cir.setReturnValue(REFERENCE.debugSkin);
+            cir.setReturnValue(C_REFERENCE.debugSkin);
             cir.cancel();
-        }else if (ConfigValues.CUSTOM_SKIN && REFERENCE.isCurrentPlayer(player.getUUID())) {
-            cir.setReturnValue(REFERENCE.customSkin);
+        }else if (ConfigValues.CUSTOM_SKIN && C_REFERENCE.isCurrentPlayer(player.getUUID())) {
+            cir.setReturnValue(C_REFERENCE.customSkin);
             cir.cancel();
         }
     }

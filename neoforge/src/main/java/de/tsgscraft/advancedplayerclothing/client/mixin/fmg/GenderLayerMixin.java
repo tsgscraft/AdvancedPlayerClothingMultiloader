@@ -6,6 +6,7 @@ import com.wildfire.render.WildfireModelRenderer;
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
 import de.tsgscraft.advancedplayerclothing.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.ClothingElement;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ModelPartModifiers;
 import de.tsgscraft.advancedplayerclothing.client.render.AnchorLayerRender;
@@ -50,10 +51,10 @@ public class GenderLayerMixin<ENTITY extends LivingEntity, MODEL extends Humanoi
         ResourceLocation var10000;
         if (entity instanceof AbstractClientPlayer player) {
             if (ConfigValues.DEBUG_SKIN_TEXTURE) {
-                return REFERENCE.debugSkin;
+                return C_REFERENCE.debugSkin;
             }
             if (player.getUUID().equals(Minecraft.getInstance().player.getUUID()) && ConfigValues.CUSTOM_SKIN) {
-                return REFERENCE.customSkin;
+                return C_REFERENCE.customSkin;
             }
             var10000 = player.getSkin().texture();
         } else {

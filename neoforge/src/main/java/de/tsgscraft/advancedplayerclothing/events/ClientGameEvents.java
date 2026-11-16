@@ -2,6 +2,7 @@ package de.tsgscraft.advancedplayerclothing.events;
 
 import de.tsgscraft.advancedplayerclothing.CommonClass;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.ClothingSave;
 import de.tsgscraft.advancedplayerclothing.client.simpleClothing.ClothingResourceLoader;
 import de.tsgscraft.advancedplayerclothing.network.ClothingNetwork;
@@ -40,7 +41,7 @@ public class ClientGameEvents {
 
     @SubscribeEvent
     public static void onPlayerLoggedOut(ClientPlayerNetworkEvent.LoggingOut event) {
-        REFERENCE.compatibleServer = false;
+        C_REFERENCE.compatibleServer = false;
     }
 
     @SubscribeEvent

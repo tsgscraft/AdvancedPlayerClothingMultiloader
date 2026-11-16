@@ -2,6 +2,7 @@ package de.tsgscraft.advancedplayerclothing.client.anchor.anchors;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.anchor.ClothingAnchor;
 import de.tsgscraft.advancedplayerclothing.client.anchor.ClothingAnchorInfo;
 import net.minecraft.client.Minecraft;
@@ -46,7 +47,7 @@ public class HeadAnchor extends ClothingAnchor {
                 return false;
         }
         if (Minecraft.getInstance().player == player)
-            return !REFERENCE.skipHead;
+            return !C_REFERENCE.skipHead;
         return true;
     }
 }
