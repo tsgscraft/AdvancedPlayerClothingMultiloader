@@ -9,7 +9,7 @@
   ],
   "contact": {
     "homepage": "https://tsgscraft.com",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/tsgscraft/AdvancedPlayerClothingMultiloader"
   },
   "license": "${license}",
   "icon": "${mod_id}.png",
@@ -20,6 +20,9 @@
     ],
     "client": [
       "de.tsgscraft.advancedplayerclothing.AdvancedPlayerClothingClient"
+    ],
+    "modmenu": [
+      "de.tsgscraft.advancedplayerclothing.client.compat.modmenu.ModMenuIntegration"
     ]
   },
   "mixins": [

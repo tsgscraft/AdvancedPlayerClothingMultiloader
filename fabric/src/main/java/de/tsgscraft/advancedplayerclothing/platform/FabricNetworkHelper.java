@@ -3,7 +3,6 @@ package de.tsgscraft.advancedplayerclothing.platform;
 import de.tsgscraft.advancedplayerclothing.platform.services.INetworkHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -14,17 +13,13 @@ public class FabricNetworkHelper implements INetworkHelper {
     @Override
     public void sendToAllPlayers(List<ServerPlayer> players, CustomPacketPayload payload) {
         for (ServerPlayer player : players) {
-            if (ServerPlayNetworking.canSend(player, payload.type())) {
-                ServerPlayNetworking.send(player, payload);
-            }
+            ServerPlayNetworking.send(player, payload);
         }
     }
 
     @Override
     public void sendToPlayer(ServerPlayer player, CustomPacketPayload payload) {
-        if (ServerPlayNetworking.canSend(player, payload.type())) {
-            ServerPlayNetworking.send(player, payload);
-        }
+        ServerPlayNetworking.send(player, payload);
     }
 
     @Override

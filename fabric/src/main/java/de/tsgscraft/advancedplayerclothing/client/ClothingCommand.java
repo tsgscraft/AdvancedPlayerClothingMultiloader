@@ -3,7 +3,7 @@ package de.tsgscraft.advancedplayerclothing.client;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
-import de.tsgscraft.advancedplayerclothing.client.screen.ClothingSelectionScreen;
+import de.tsgscraft.advancedplayerclothing.client.screen.clothing.ClothingSelectionScreen;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.Minecraft;
@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public class ClothingCommand {
-    public static final LiteralArgumentBuilder<FabricClientCommandSource> Command = ClientCommandManager.literal("advancedclothing")
+    public static final LiteralArgumentBuilder<FabricClientCommandSource> Command = ClientCommandManager.literal("advancedplayerclothing")
             .then(ClientCommandManager.literal("setmap")
                     .then(ClientCommandManager.argument("key", StringArgumentType.string())
                             .suggests((context, builder) -> {

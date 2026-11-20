@@ -105,7 +105,7 @@ public class ClothingModel {
                 poseStack.translate(info.getAnchorOffsetX()/16.0F, info.getAnchorOffsetY()/16.0F, info.getAnchorOffsetZ()/16.0F);
             }
             if (enabled) {
-                entry.getValue().compile(poseStack.last(), buffer, packedLight, packedOverlay, color);
+                entry.getValue().compile(poseStack.last(), buffer, packedLight, packedOverlay, color, player);
             }
             poseStack.popPose();
         }

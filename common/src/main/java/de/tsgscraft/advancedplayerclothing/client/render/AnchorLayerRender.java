@@ -3,14 +3,14 @@ package de.tsgscraft.advancedplayerclothing.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
-import de.tsgscraft.advancedplayerclothing.platform.RagdollPart;
 import de.tsgscraft.advancedplayerclothing.client.ClothingElement;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.client.mixin.PlayerModelAccessor;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ModelPartModifiers;
+import de.tsgscraft.advancedplayerclothing.platform.RagdollPart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -78,22 +78,27 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
 
         int overlay = LivingEntityRenderer.getOverlayCoords(entity, 0.0F);
 
-        ClothingRegistry.getInstance().getActiveClothingElements(entity.getUUID()).values().forEach(clothingElementId -> {
-            ClothingElement clothingElement = ClothingRegistry.getInstance().getClothingElements().get(clothingElementId);
-            if (clothingElement != null && clothingElement.renderInfo() != null) {
-                clothingElement.renderInfo().render(
-                        poseStack,
-                        buffer,
-                        light,
-                        overlay,
-                        -1,
-                        parent,
-                        layer,
-                        entity,
-                        "generic"
-                );
-            }
-        });
+        try {
+            ClothingRegistry.getInstance().getActiveClothingElements(entity.getUUID()).values().forEach(clothingElementId -> {
+                ClothingElement clothingElement = ClothingRegistry.getInstance().getClothingElements().get(clothingElementId);
+                if (clothingElement != null && clothingElement.renderInfo() != null) {
+                    clothingElement.renderInfo().render(
+                            poseStack,
+                            buffer,
+                            light,
+                            overlay,
+                            -1,
+                            parent,
+                            layer,
+                            entity,
+                            "generic"
+                    );
+                }
+            });
+        }catch (Exception e) {
+            REFERENCE.LOG.error("Error while rendering clothing for player with UUID {}: {}", entity.getUUID(), e.getMessage());
+            e.printStackTrace();
+        }
 
         if (ConfigValues.ONLY_BREASTS) {
             return;
@@ -101,7 +106,7 @@ public class AnchorLayerRender extends RenderLayer<AbstractClientPlayer, PlayerM
 
         // Render the anchor layer itself (as a smaller secondLayer)
         VertexConsumer vertexConsumer = buffer.getBuffer(
-                RenderType.entityCutoutNoCull(ConfigValues.DEBUG_SKIN_TEXTURE ? C_REFERENCE.debugSkin : (ConfigValues.CUSTOM_SKIN && C_REFERENCE.isCurrentPlayer(entity.getUUID())) ? C_REFERENCE.customSkin : entity.getSkin().texture())
+                RenderType.entityCutoutNoCull(C_REFERENCE.getSkinTexture(entity))
         );
 
         if (((PlayerModelAccessor) parent).isSlim()) {

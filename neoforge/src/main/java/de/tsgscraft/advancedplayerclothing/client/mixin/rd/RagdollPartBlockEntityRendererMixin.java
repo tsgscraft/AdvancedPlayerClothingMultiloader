@@ -1,13 +1,11 @@
 package de.tsgscraft.advancedplayerclothing.client.mixin.rd;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
-import de.tsgscraft.advancedplayerclothing.REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
 import de.tsgscraft.advancedplayerclothing.client.render.AnchorLayerRender;
 import de.tsgscraft.advancedplayerclothing.platform.RagdollPart;
-import de.tsgscraft.advancedplayerclothing.platform.Services;
 import dev.leo.sableplayerragdoll.block.entity.RagdollPartBlockEntity;
 import dev.leo.sableplayerragdoll.entity.RagdollDollEntity;
 import dev.leo.sableplayerragdoll.neoforge.mixin.LivingEntityRendererAccessor;

@@ -14,7 +14,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ClothingRegistry {
-    // TODO: Fix a bug that loads the clothing across different worlds
 
     private static ClothingRegistry instance;
 
@@ -141,8 +140,14 @@ public class ClothingRegistry {
     }
 
     public void clearActiveClothingData() {
+        clearActiveClothingData(true);
+    }
+
+    public void clearActiveClothingData(boolean saveToFile) {
         getActiveClothingElements().clear();
-        saveActiveClothingData();
+        if (saveToFile) {
+            saveActiveClothingData();
+        }
         ClothingNetwork.sendFullClothing();
     }
 

@@ -40,4 +40,9 @@ public interface IPlatformHelper {
     default String getEnvironmentName() {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    /**
+     * Saves the client configuration.
+     */
+    void saveClientConfig();
 }

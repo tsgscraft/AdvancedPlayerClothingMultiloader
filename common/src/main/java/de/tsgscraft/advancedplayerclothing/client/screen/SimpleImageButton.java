@@ -52,4 +52,9 @@ public class SimpleImageButton extends AbstractWidget {
     protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
 
     }
+
+    public void resize(int i, int i1) {
+        setX(i);
+        setY(i1);
+    }
 }

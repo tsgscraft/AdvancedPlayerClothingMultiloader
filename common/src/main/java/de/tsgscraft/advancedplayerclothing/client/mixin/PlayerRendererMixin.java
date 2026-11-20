@@ -1,9 +1,8 @@
 package de.tsgscraft.advancedplayerclothing.client.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
-import de.tsgscraft.advancedplayerclothing.REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

@@ -2,8 +2,9 @@ package de.tsgscraft.advancedplayerclothing.client.simpleClothing;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
@@ -76,7 +77,7 @@ public class ModelCube {
     }
 
     public void compile(PoseStack.Pose pose, MultiBufferSource buffer, int packedLight, int packedOverlay,
-                        int color) {
+                        int color, AbstractClientPlayer player) {
         Matrix4f matrix4f = pose.pose();
         Vector3f vector3f = new Vector3f();
 
@@ -89,7 +90,7 @@ public class ModelCube {
             float f1 = vector3f1.y();
             float f2 = vector3f1.z();
 
-            VertexConsumer vertexConsumer = (ConfigValues.DEBUG && modelpart$polygon.debugTextureId != null) ? buffer.getBuffer(RenderType.entityTranslucent(modelpart$polygon.debugTextureId)) : buffer.getBuffer(RenderType.entityTranslucent(modelpart$polygon.textureId));
+            VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucent(C_REFERENCE.getSkinTexture(player, modelpart$polygon.textureId, modelpart$polygon.debugTextureId)));
             for (Vertex modelpart$vertex : modelpart$polygon.vertices) {
                 float f3 = modelpart$vertex.pos.x() / 16.0F;
                 float f4 = modelpart$vertex.pos.y() / 16.0F;

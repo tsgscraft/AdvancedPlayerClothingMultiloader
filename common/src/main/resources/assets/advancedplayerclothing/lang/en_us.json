@@ -2,5 +2,51 @@
   "advancedplayerclothing.type.advancedplayerclothing.hat": "Top Hat",
   "clothing.hat.tophat": "Top Hat",
   "key.advancedplayerclothing.clothing_selection_gui": "Open Clothing Selection Screen",
-  "category.advancedplayerclothing.generic": "Advanced Clothing"
+  "category.advancedplayerclothing.generic": "Advanced Clothing",
+  "screen.advancedplayerclothing.config.title": "Configuration",
+  "screen.advancedplayerclothing.clothing.title": "Clothing Selection",
+
+  "advancedplayerclothing.config.player_model.default": "Default",
+  "advancedplayerclothing.config.player_model.wide": "Wide",
+  "advancedplayerclothing.config.player_model.slim": "Slim",
+
+  "screen.advancedplayerclothing.config.save": "Save",
+  "screen.advancedplayerclothing.config.back": "Back",
+  "screen.advancedplayerclothing.config.debug": "Open Debug Options",
+
+  "screen.advancedplayerclothing.config.enabled": "Clothing Rendering Enabled",
+  "screen.advancedplayerclothing.config.enabled.description": "Clothing Rendering Enabled",
+
+  "screen.advancedplayerclothing.config.custom_skin": "Custom Skin",
+  "screen.advancedplayerclothing.config.custom_skin.description": "Whether to use a custom skin for the player (use a resource pack ('/textures/entity/player.png'))",
+
+  "screen.advancedplayerclothing.config.custom_player_model": "Overwrite Player Model",
+  "screen.advancedplayerclothing.config.custom_player_model.description": "Whether to overwrite the player model (default, wide, slim)",
+
+  "screen.advancedplayerclothing.config.hide_default": "Hide Default Clothing",
+  "screen.advancedplayerclothing.config.hide_default.description": "Whether to hide the default prepackaged clothing",
+
+  "screen.advancedplayerclothing.config.debug.debug": "Debug",
+  "screen.advancedplayerclothing.config.debug.debug.description": "Whether to enable debug textures for the clothing",
+
+  "screen.advancedplayerclothing.config.debug.debug_skin": "Skin",
+  "screen.advancedplayerclothing.config.debug.debug_skin.description": "Hide the rendered player model and only render the clothing",
+
+  "screen.advancedplayerclothing.config.debug.debug_skin_texture": "Skin Texture",
+  "screen.advancedplayerclothing.config.debug.debug_skin_texture.description": "Render debug the player texture",
+
+  "screen.advancedplayerclothing.config.debug.only_breasts": "Only Breasts",
+  "screen.advancedplayerclothing.config.debug.only_breasts.description": "Render only the breasts of the player model",
+
+  "screen.advancedplayerclothing.config.debug.hide_left_boob": "Hide Left Boob",
+  "screen.advancedplayerclothing.config.debug.hide_left_boob.description": "Hide the left breast of the player model",
+
+  "screen.advancedplayerclothing.config.debug.hide_right_boob": "Hide Right Boob",
+  "screen.advancedplayerclothing.config.debug.hide_right_boob.description": "Hide the right breast of the player model",
+
+  "screen.advancedplayerclothing.config.debug.debug_first_person": "First Person",
+  "screen.advancedplayerclothing.config.debug.debug_first_person.description": "Debug logging for first person rendering if using the first person mod",
+
+  "screen.advancedplayerclothing.config.debug.debug_modifiers": "Modifiers",
+  "screen.advancedplayerclothing.config.debug.debug_modifiers.description": "Debug logging for clothing modifiers (unused for now)"
 }

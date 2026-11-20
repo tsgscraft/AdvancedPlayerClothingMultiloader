@@ -1,7 +1,8 @@
 package de.tsgscraft.advancedplayerclothing.client.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
+import de.tsgscraft.advancedplayerclothing.client.config.CustomPlayerModelEnum;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -28,8 +29,8 @@ public class EntityRenderDispatcherMixin {
         if (entity instanceof AbstractClientPlayer player) {
             if (player.getUUID().equals(Minecraft.getInstance().player.getUUID())) {
                 return switch (ConfigValues.CUSTOM_PLAYER_MODEL) {
-                    case 1 -> PlayerSkin.Model.WIDE;
-                    case 2 -> PlayerSkin.Model.SLIM;
+                    case CustomPlayerModelEnum.WIDE -> PlayerSkin.Model.WIDE;
+                    case CustomPlayerModelEnum.SLIM -> PlayerSkin.Model.SLIM;
                     default -> original;
                 };
             }

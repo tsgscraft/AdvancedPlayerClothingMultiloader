@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
 import de.tsgscraft.advancedplayerclothing.CommonClass;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.ClothingElement;
 import de.tsgscraft.advancedplayerclothing.client.anchor.ClothingAnchorInfo;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
@@ -96,7 +97,13 @@ public class ClothingResourceLoader implements PreparableReloadListener {
                         for (JsonElement textureElement : textures) {
                             JsonObject textureObject = textureElement.getAsJsonObject();
                             String textureId = textureObject.get("id").getAsString();
-                            ResourceLocation textureLocation = ResourceLocation.parse(textureObject.get("location").getAsString());
+                            String locationString = textureObject.get("location").getAsString();
+                            ResourceLocation textureLocation;
+                            if (locationString.equals("$player_skin")) {
+                                textureLocation = C_REFERENCE.playerSkinIdentifier;
+                            }else {
+                                textureLocation = ResourceLocation.parse(locationString);
+                            }
                             ResourceLocation debugTextureLocation = null;
                             if (textureObject.has("debug")) {
                                 debugTextureLocation = ResourceLocation.parse(textureObject.get("debug").getAsString());

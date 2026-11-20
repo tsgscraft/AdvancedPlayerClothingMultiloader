@@ -40,6 +40,11 @@ repositories {
         name = 'DevAuth'
         url = 'https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1'
     }
+
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
 }
 
 dependencies {
@@ -59,6 +64,8 @@ dependencies {
     modImplementation files("libs/TRender-1.0.17-1.21.1-fabric-SNAPSHOT.jar")    // lib's for FPM and NEA
 
     modRuntimeOnly "me.djtheredstoner:DevAuth-fabric:1.2.2"
+
+    modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
 }
 
 loom {
@@ -80,6 +87,14 @@ loom {
             runDir('runs/client2')
             property('devauth.enabled', 'true')
             property('devauth.account', 'main')
+        }
+        clientAuthAlt {
+            client()
+            setConfigName('Fabric Client Auth Alt')
+            ideConfigGenerated(true)
+            runDir('runs/client3')
+            property('devauth.enabled', 'true')
+            property('devauth.account', 'alt')
         }
         server {
             server()

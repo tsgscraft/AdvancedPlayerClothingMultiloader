@@ -1,15 +1,14 @@
 package de.tsgscraft.advancedplayerclothing.events;
 
+import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
 import de.tsgscraft.advancedplayerclothing.CommonClass;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
-import de.tsgscraft.advancedplayerclothing.REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.ClothingCommand;
 import de.tsgscraft.advancedplayerclothing.client.ClothingSave;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
 import de.tsgscraft.advancedplayerclothing.client.render.AnchorLayer;
 import de.tsgscraft.advancedplayerclothing.client.render.AnchorLayerRender;
-import de.tsgscraft.advancedplayerclothing.network.ClothingNetwork;
 import de.tsgscraft.advancedplayerclothing.network.plugin.TestForServerPayload;
 import de.tsgscraft.advancedplayerclothing.platform.Services;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -24,9 +23,7 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.player.Player;
 
-public class Events {
-
-    private static int pendingTicks = -1;
+public class ClientEvents {
 
     public static void registerClientEvents() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
@@ -38,19 +35,14 @@ public class Events {
                 Services.NETWORK.sendToServer(new TestForServerPayload((byte) 0));
             }catch (Exception ignored) {}
             if (CommonClass.isClientSide()) ClothingSave.loadActiveClothingData();
-            ClothingNetwork.sendFullClothing();
-            pendingTicks = 5;
         });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
             C_REFERENCE.compatibleServer = false;
+            ClothingRegistry.getInstance().clearActiveClothingData(false);
         });
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (pendingTicks > 0 && --pendingTicks == 0) {
-                ClothingNetwork.sendFullClothing();
-            }
-
             if (!ConfigValues.ENABLED) return;
 
             Minecraft minecraft = Minecraft.getInstance();

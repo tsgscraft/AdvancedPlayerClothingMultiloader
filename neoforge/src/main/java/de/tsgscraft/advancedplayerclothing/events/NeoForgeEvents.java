@@ -1,9 +1,8 @@
 package de.tsgscraft.advancedplayerclothing.events;
 
-import de.tsgscraft.advancedplayerclothing.Config;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.ClothingCommand;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;

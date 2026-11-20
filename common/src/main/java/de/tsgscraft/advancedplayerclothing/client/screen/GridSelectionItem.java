@@ -1,5 +1,6 @@
 package de.tsgscraft.advancedplayerclothing.client.screen;
 
+import de.tsgscraft.advancedplayerclothing.client.screen.clothing.ClothingSelectionScreen;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.List;

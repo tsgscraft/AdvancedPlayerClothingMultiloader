@@ -1,11 +1,13 @@
-package de.tsgscraft.advancedplayerclothing.client.screen;
+package de.tsgscraft.advancedplayerclothing.client.screen.clothing;
 
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
 import de.tsgscraft.advancedplayerclothing.client.ClothingElement;
+import de.tsgscraft.advancedplayerclothing.client.screen.GridSelectionItem;
+import de.tsgscraft.advancedplayerclothing.client.screen.GridSelectionWidget;
+import de.tsgscraft.advancedplayerclothing.client.screen.ScreenUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 

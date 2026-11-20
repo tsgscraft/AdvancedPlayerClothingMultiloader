@@ -1,7 +1,6 @@
 package de.tsgscraft.advancedplayerclothing.client.anchor.anchors;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import de.tsgscraft.advancedplayerclothing.REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.anchor.ClothingAnchor;
 import de.tsgscraft.advancedplayerclothing.client.anchor.ClothingAnchorInfo;

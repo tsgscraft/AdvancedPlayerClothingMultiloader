@@ -1,14 +1,17 @@
-package de.tsgscraft.advancedplayerclothing.client.screen;
+package de.tsgscraft.advancedplayerclothing.client.screen.clothing;
 
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
 import de.tsgscraft.advancedplayerclothing.REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.ClothingElement;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
+import de.tsgscraft.advancedplayerclothing.client.screen.GridSelectionItem;
+import de.tsgscraft.advancedplayerclothing.client.screen.GridSelectionWidget;
+import de.tsgscraft.advancedplayerclothing.client.screen.ScreenUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -26,7 +29,11 @@ public class GridSelectionClothingType extends GridSelectionItem<GridSelectionCl
     @Override
     public void onClick(double x, double y, int button, ClothingSelectionScreen screen) {
         List<ClothingElement> clothingElements = ClothingRegistry.getInstance().getClothingTypeToElementMap().get(clothingType);
-        List<GridSelectionClothingElement> clothingElementItems = clothingElements.stream().map(GridSelectionClothingElement::new).toList();
+        List<GridSelectionClothingElement> clothingElementItems = new ArrayList<>(clothingElements.stream().map(GridSelectionClothingElement::new).toList());
+        if (ConfigValues.HIDE_DEFAULT) {
+            List<String> defaultClothing = C_REFERENCE.defaultClothing;
+            clothingElementItems.removeIf(item -> defaultClothing.contains(item.clothingElement.id().toString()));
+        }
         screen.gridSelectionItemWidget.setItems(clothingElementItems);
         screen.setActive(clothingType);
     }
@@ -42,10 +49,6 @@ public class GridSelectionClothingType extends GridSelectionItem<GridSelectionCl
         int bgColor = 0x44000000; // Default background color
         if (gridSelectionWidget.isOverItem(mouseX, mouseY, itemX, itemY)) {
             bgColor += 0x44888888; // Highlight color when hovered
-        }
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player == null) {
-            return;
         }
 
         guiGraphics.fill(

@@ -1,7 +1,7 @@
 package de.tsgscraft.advancedplayerclothing.client.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.client.modifiers.ClothingModifiers;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;

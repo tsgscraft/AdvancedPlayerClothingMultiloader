@@ -2,6 +2,7 @@ package de.tsgscraft.advancedplayerclothing.client.simpleClothing;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 
 import java.util.List;
@@ -52,9 +53,9 @@ public class Model {
         this.zScale = from.zScale;
     }
 
-    public void compile(PoseStack.Pose pose, MultiBufferSource buffer, int packedLight, int packedOverlay, int color) {
+    public void compile(PoseStack.Pose pose, MultiBufferSource buffer, int packedLight, int packedOverlay, int color, AbstractClientPlayer player) {
         for (ModelCube cube : cubes) {
-            cube.compile(pose, buffer, packedLight, packedOverlay, color);
+            cube.compile(pose, buffer, packedLight, packedOverlay, color, player);
         }
     }
 }

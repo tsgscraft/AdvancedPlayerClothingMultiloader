@@ -1,4 +1,4 @@
-package de.tsgscraft.advancedplayerclothing;
+package de.tsgscraft.advancedplayerclothing.client.config;
 
 public class ConfigValues {
     /*
@@ -17,7 +17,8 @@ public class ConfigValues {
      */
     public static boolean ENABLED = true;
     public static boolean CUSTOM_SKIN = false;
-    public static int CUSTOM_PLAYER_MODEL = 0;
+    public static CustomPlayerModelEnum CUSTOM_PLAYER_MODEL = CustomPlayerModelEnum.DEFAULT;
+    public static boolean HIDE_DEFAULT = false; // TODO: Implement a way for the server to force this setting on the client side, so that the server can hide the default clothing for all players. (Maybe hide client side only clothing completely)
 
     public static boolean DEBUG = false;
     public static boolean DEBUG_SKIN = false;

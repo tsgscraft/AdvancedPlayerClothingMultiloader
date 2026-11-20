@@ -44,6 +44,7 @@ public class ClothingNetworkModEvents {
                 FullClothingPayload.STREAM_CODEC,
                 (payload, context) -> {
                     context.enqueueWork(() -> {
+                        System.out.println("Received full clothing payload from player: " + context.player().getUUID().toString() + " | Clothing Data: " + payload.clothingData());
                         ClothingNetwork.receiveFullClothing(payload);
                         Services.NETWORK.sendToAllPlayers(
                                 context.player().getServer().getPlayerList().getPlayers(),
@@ -99,6 +100,7 @@ public class ClothingNetworkModEvents {
                                     player,
                                     new TestForServerReturnPayload((byte) 1)
                             );
+                            REFERENCE.LOG.info("Player with UUID {} tested for server compatibility. Sent response.", context.player().getUUID());
                         }
                     });
                 }
@@ -112,6 +114,7 @@ public class ClothingNetworkModEvents {
                         // Compatible server detected!
                         REFERENCE.LOG.info("Compatible server detected!");
                         C_REFERENCE.compatibleServer = true;
+                        ClothingNetwork.sendFullClothing();
                     }
                 }
         );

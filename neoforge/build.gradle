@@ -55,12 +55,19 @@ neoForge {
             ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
         }
         client {
+            gameDirectory = file('runs/client')
+            client()
+        }
+        clientAuth {
+            devLogin = true
+            gameDirectory = file('runs/client2')
             client()
         }
         data {
             data()
         }
         server {
+            gameDirectory = file('runs/server')
             server()
         }
     }

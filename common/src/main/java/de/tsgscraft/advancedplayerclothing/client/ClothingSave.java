@@ -59,8 +59,11 @@ public class ClothingSave {
         if (isSingleplayer && Minecraft.getInstance().getSingleplayerServer() != null) {
             // do not use getLevelName() as the can be multiple worlds with the same name, use the world folder name instead
             saveKey = Minecraft.getInstance().getSingleplayerServer().getWorldPath(LevelResource.ROOT).toFile().getParentFile().getName();
-        } else {
+        } else if (!isSingleplayer) {
             saveKey = Minecraft.getInstance().getCurrentServer().ip;
+        } else {
+            REFERENCE.LOG.error("Failed to save active clothing data, no server or singleplayer server found.");
+            return;
         }
         REFERENCE.LOG.info("Saving active clothing data for {} with key: {}", isSingleplayer ? "singleplayer" : "multiplayer", saveKey);
 

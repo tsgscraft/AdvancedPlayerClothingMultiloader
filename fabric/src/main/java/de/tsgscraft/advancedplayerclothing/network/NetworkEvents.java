@@ -8,7 +8,6 @@ import de.tsgscraft.advancedplayerclothing.network.plugin.TestForServerReturnPay
 import de.tsgscraft.advancedplayerclothing.platform.Services;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 public class NetworkEvents {
@@ -81,10 +80,13 @@ public class NetworkEvents {
         ClientPlayNetworking.registerGlobalReceiver(
                 TestForServerReturnPayload.TYPE,
                 (payload, context) -> {
-                    if (payload.data() == 1) {
-                        REFERENCE.LOG.info("Compatible server detected!");
-                        C_REFERENCE.compatibleServer = true;
-                    }
+                    context.client().execute(() -> {
+                        if (payload.data() == 1) {
+                            REFERENCE.LOG.info("Compatible server detected!");
+                            C_REFERENCE.compatibleServer = true;
+                            ClothingNetwork.sendFullClothing();
+                        }
+                    });
                 }
         );
     }
@@ -128,6 +130,7 @@ public class NetworkEvents {
                         // Send back a response to the client indicating that the server is compatible
                         TestForServerReturnPayload returnPayload = new TestForServerReturnPayload((byte) 1);
                         Services.NETWORK.sendToPlayer(context.player(), returnPayload);
+                        REFERENCE.LOG.info("Player with UUID {} tested for server compatibility. Sent response.", context.player().getUUID());
                     });
                 }
         );

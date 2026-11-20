@@ -2,14 +2,11 @@ package de.tsgscraft.advancedplayerclothing;
 
 import de.tsgscraft.advancedplayerclothing.client.anchor.Anchors;
 import de.tsgscraft.advancedplayerclothing.client.anchor.anchors.*;
-import de.tsgscraft.advancedplayerclothing.events.Events;
+import de.tsgscraft.advancedplayerclothing.events.ClientEvents;
 import de.tsgscraft.advancedplayerclothing.network.NetworkEvents;
 import net.fabricmc.api.ClientModInitializer;
 
 public class AdvancedPlayerClothingClient implements ClientModInitializer {
-
-    // TODO: Config Screen
-    // TODO: Fix icon for mod menu
 
     @Override
     public void onInitializeClient() {
@@ -23,9 +20,9 @@ public class AdvancedPlayerClothingClient implements ClientModInitializer {
         Anchors.registerAnchor(new LBoobAnchor());
         Anchors.registerAnchor(new RBoobAnchor());
 
-        Config.load();
+        ClientConfig.load();
 
-        Events.registerClientEvents();
+        ClientEvents.registerClientEvents();
 
         NetworkEvents.registerClientReceivers();
     }

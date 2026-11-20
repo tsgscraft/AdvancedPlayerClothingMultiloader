@@ -2,11 +2,11 @@ package de.tsgscraft.advancedplayerclothing.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.tsgscraft.advancedplayerclothing.ClothingRegistry;
-import de.tsgscraft.advancedplayerclothing.ConfigValues;
-import de.tsgscraft.advancedplayerclothing.REFERENCE;
 import de.tsgscraft.advancedplayerclothing.client.C_REFERENCE;
+import de.tsgscraft.advancedplayerclothing.client.config.ConfigValues;
 import de.tsgscraft.advancedplayerclothing.client.mixin.PlayerModelAccessor;
-import de.tsgscraft.advancedplayerclothing.client.simpleClothing.*;
+import de.tsgscraft.advancedplayerclothing.client.simpleClothing.ClothingModel;
+import de.tsgscraft.advancedplayerclothing.client.simpleClothing.TextureData;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -60,7 +60,7 @@ public class ClothingRendering {
     }
 
     public void renderInInventory(GuiGraphics guiGraphics, int x, int y, int width, int height, float partialTick, int mouseX, int mouseY) {
-        if (C_REFERENCE.isClientSlim && hasSlimModel) {
+        if (C_REFERENCE.isClientSlim() && hasSlimModel) {
             slimModel.renderInInventory(guiGraphics, x, y, width, height, partialTick, mouseX, mouseY);
         } else if (hasModel) {
             model.renderInInventory(guiGraphics, x, y, width, height, partialTick, mouseX, mouseY);
@@ -70,7 +70,7 @@ public class ClothingRendering {
     }
 
     public void renderEntityInInventoryFollowsMouse(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int scale, float yOffset, float mouseX, float mouseY) {
-        if (C_REFERENCE.isClientSlim && hasSlimModel) {
+        if (C_REFERENCE.isClientSlim() && hasSlimModel) {
             slimModel.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x2, y2, scale, yOffset, mouseX, mouseY);
         } else if (hasModel) {
             model.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x2, y2, scale, yOffset, mouseX, mouseY);
@@ -80,7 +80,7 @@ public class ClothingRendering {
     }
 
     public void renderEntityInInventoryFollowsAngle(GuiGraphics p_282802_, int p_275688_, int p_275245_, int p_275535_, int p_294406_, int p_294663_, float p_275604_, float angleXComponent, float angleYComponent) {
-        if (C_REFERENCE.isClientSlim && hasSlimModel) {
+        if (C_REFERENCE.isClientSlim() && hasSlimModel) {
             slimModel.renderEntityInInventoryFollowsAngle(p_282802_, p_275688_, p_275245_, p_275535_, p_294406_, p_294663_, p_275604_, angleXComponent, angleYComponent);
         } else if (hasModel) {
             model.renderEntityInInventoryFollowsAngle(p_282802_, p_275688_, p_275245_, p_275535_, p_294406_, p_294663_, p_275604_, angleXComponent, angleYComponent);
@@ -90,7 +90,7 @@ public class ClothingRendering {
     }
 
     public void renderEntityInInventory(GuiGraphics guiGraphics, float x, float y, float scale, Vector3f translate, Quaternionf pose, Quaternionf cameraOrientation, LocalPlayer entity) {
-        if (C_REFERENCE.isClientSlim && hasSlimModel) {
+        if (C_REFERENCE.isClientSlim() && hasSlimModel) {
             slimModel.renderEntityInInventory(guiGraphics, x, y, scale, translate, pose, cameraOrientation, entity);
         } else if (hasModel) {
             model.renderEntityInInventory(guiGraphics, x, y, scale, translate, pose, cameraOrientation, entity);
